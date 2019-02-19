@@ -1,0 +1,91 @@
+openapi: 3.0.0
+info:
+  title: API
+  description: API de pagos con tarjeta
+  version: 0.1.9
+
+servers:
+  - url: http://localhost:8080/risk-assessment-service/
+
+paths:
+
+  "/evaluate-payment-intent":
+    post:
+      description: Evalua la intención de pago y devuelve una respuesta positiva o negativa para proseguir con la transacción, según el score de riesgo
+      operationId: evaluatePaymentIntent
+      requestBody:
+        $ref: "#/components/requestBodies/PaymentIntentForRiskAssessmentBody"
+        
+      responses:
+        200:
+          description: Éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskAssessmentResponse"
+
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+  
+    PaymentIntentForRiskAssessment:
+      type: object
+      required:
+        - transactionId
+        - token
+        - amount
+      properties:
+        transactionId:
+          type: string
+        token:
+          type: string
+        amount:
+          type: integer
+   
+    RiskAssessmentResponse:
+      required:
+        - success
+        - date
+        - transactionId
+        - status
+        - riskScore
+      properties:
+        success:
+          type: string
+        date:
+          type: string
+        transactionId:
+          type: string
+        status:
+          type: string
+          description: "Estado de la respuesta, si procede o no el pago"
+          default: "antifraud:continue"
+        riskScore:
+          type: string
+          description: "Score de riesgo, del 0 (nada) al 10 (mucho)"
+          default: 0
+  
+    ErrorResponse:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+  
+    PaymentIntentForRiskAssessmentBody:
+      description: Intento de pago para evaluación de riesgo
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentIntentForRiskAssessment'
+
+

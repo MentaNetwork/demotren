@@ -1,0 +1,26 @@
+Crear imagen:
+
+$ docker build -t wisely-dotnetcore .
+
+
+Ejecutar imagen:
+
+$ docker run -it --rm --name wisely -p 5000:5000 wisely-dotnetcore
+
+
+Ver app en ejecución:
+
+http://localhost:5000/api/values
+http://localhost:5000/api/values/100
+http://localhost:5000/api/values/123
+http://localhost:5000/api/values/foo
+
+
+Importante haber agregado el paquete del agente del API de New Relic:
+
+$ dotnet add package NewRelic.Agent.Api --version 8.11.157
+
+    <PackageReference Include="NewRelic.Agent.Api" Version="8.11.157" />
+
+
+

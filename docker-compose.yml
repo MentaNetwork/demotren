@@ -1,0 +1,65 @@
+
+version: "3"
+services:
+
+  mysql:
+    image: mariadb:latest
+    env_file: .env
+    volumes:
+      - ./services/mysql/data:/var/lib/mysql
+      - ./services/mysql/docker/initdb.d:/docker-entrypoint-initdb.d/:ro
+      - ./services/mysql/docker/conf.d:/etc/mysql/conf.d/
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+  
+  oracle:
+    build: services/oracle
+    env_file: .env
+    ports:
+      - 1521:1521
+    restart: unless-stopped
+
+  frontend:
+    build: services/frontend
+    env_file: .env
+    volumes:
+      - ./services/frontend/source:/app
+    ports:
+      - 80:80
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    restart: unless-stopped
+  
+  antifraud:
+    build: services/antifraud
+    env_file: .env
+    ports:
+      - 8080:8080
+    depends_on:
+      - oracle
+    links:
+      - oracle
+    restart: unless-stopped
+
+  core:
+    build: services/core
+    env_file: .env
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+
+  api:
+    build: services/api
+    env_file: .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - antifraud
+      - core
+    links:
+      - antifraud
+      - core
+    restart: unless-stopped

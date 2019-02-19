@@ -1,0 +1,6 @@
+flask
+peewee
+pylint
+newrelic
+uwsgi
+mysqlclient
