@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  title: API
+  description: API de pagos con tarjeta
+  version: 0.1.9
+
+servers:
+  - url: http://localhost:8000/
+
+paths:
+  
+  /status/{transactionId}:
+    get:
+      summary: Devuelve el estatus de una transacción.
+      description: Devuelve el estatus de una transacción de pago.
+      operationId: status
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Transacción de pago
+          schema:
+            type: string
+      responses:
+        200:
+          description: Estatus de la transacción de pago
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tokenize:
+    post:
+      description: Crea un token con base en un número de tarjeta para con él hacer un intento de pago.
+      operationId: tokenize
+      requestBody:
+        $ref: "#/components/requestBodies/CardBody"
+        
+      responses:
+        200:
+          description: Éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenizationResponse"
+        403:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /pay:
+    post:
+      description: Procesa un intento de pago con tarjeta.
+      operationId: paymentPost
+      requestBody:
+        $ref: "#/components/requestBodies/PaymentIntentBody"
+      
+      responses:
+        200:
+          description: Pago procesado completamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentProcessedResponse"
+        202:
+          description: Intento de pago aceptado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentAcceptedResponse"
+        400:
+          description: Parámetros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        403:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+components:
+
+  schemas:
+
+    Card:
+      type: object
+      required:
+        - name
+        - number
+        - year
+        - month
+        - cvc
+      properties:
+        name:
+          type: string
+        number:
+          type: string
+        year:
+          type: integer
+        month:
+          type: integer
+        cvc:
+          type: integer
+ 
+    PaymentIntent:
+      type: object
+      required:
+        - token
+        - amount
+        - customerId
+        - recipientId
+      properties:
+        token:
+          type: string
+        amount:
+          description: Cantidad a pagar en centavos
+          type: integer
+        customerId:
+          description: ID del emisor del pago
+          type: string
+        recipientId:
+          description: ID del receptor del pago
+          type: string
+    
+    PaymentStatus:
+      type: object
+      required:
+        - transactionId
+        - status
+      properties:
+        transactionId:
+          type: string
+        status:
+          type: string
+   
+    TokenizationResponse:
+      required:
+        - token
+        - status
+      properties:
+        token:
+          type: string
+        status:
+          type: string
+          description: Estado de la tokenización
+          default: ok
+  
+    PaymentAcceptedResponse:
+      required:
+        - transactionId
+        - status
+      properties:
+        transactionId:
+          type: string
+          description: Id de la transacción
+        status:
+          type: string
+          description: Estado del intento de pago
+          default: processing
+  
+    PaymentProcessedResponse:
+      required:
+        - transactionId
+        - status
+      properties:
+        transactionId:
+          type: string
+          description: Id de la transacción
+        status:
+          type: string
+          description: Estado del intento de pago
+          default: processed  
+  
+    UnauthorizedResponse:
+      required:
+        - transactionId
+        - code
+        - message
+      properties:
+        transactionId:
+          type: string
+          description: Id de la transacción
+        code:
+          type: string
+          description: Código de error (fraude, rechazo, sin fondos, etc)
+        message:
+          type: string
+          description: Mensaje de error
+  
+    ErrorResponse:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        transactionId:
+          type: string
+          description: Id de la transacción
+
+  requestBodies:
+  
+    CardBody:
+      description: Tarjeta
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Card'
+  
+    PaymentIntentBody:
+      description: Intento de pago
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentIntent'
+
+

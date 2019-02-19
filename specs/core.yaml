@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: API
+  description: API de pagos con tarjeta
+  version: 0.1.9
+
+servers:
+  - url: http://localhost:5000/core
+
+paths:
+
+  "/PaymentProcessor":
+    post:
+      description: Procesa la intención de pago ya que fue validada.
+      operationId: processPayment
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Payment"
+      responses:
+        200:
+          description: Éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentResponse"
+
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+  
+    Payment:
+      type: object
+      required:
+        - transactionId
+        - token
+        - amount
+      properties:
+        transactionId:
+          type: string
+        token:
+          type: string
+        amount:
+          type: integer
+   
+    PaymentResponse:
+      required:
+        - success
+        - transactionId
+        - status
+        - delay
+      properties:
+        success:
+          type: string
+        status:
+          type: string
+          description: "Estado de la respuesta"
+        delay:
+          type: integer
+          description: "Retraso en el procesamiento de la respuesta"
+
+  
+    ErrorResponse:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+  
+    PaymentForm:
+      description: Intento de pago para procesamiento bancario
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/Payment'
+

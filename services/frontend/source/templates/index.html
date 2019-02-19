@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container">
+  <form method="post" action="" class="col col-md-3 center-block" style="margin:30px auto;">
+    {% if error %}
+    <div class="alert alert-warning" role="alert">{{ error }}</div>
+    {% endif %}
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+      <small id="emailHelp" class="form-text text-muted">*@menta.com.mx</small>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      <small id="emailHelp" class="form-text text-muted">El password es 1234 ;)</small>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+  </form>
+</div>
+
+{% endblock %}

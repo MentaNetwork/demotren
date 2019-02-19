@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active"><a href="/">Inicio</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Ventanilla de Pagos</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<form class="col-md-3" id="paymentForm">
+  <input type="hidden" id="token" name="token" value=""/>
+  <input type="hidden" id="transactionId" name="transactionId" value=""/>
+  <div class="form-group">
+    <select class="form-control custom-select custom-select-lg mb-3" id="amount">
+      {% for value in amounts %}
+      <option value="{{ value * 100 }}">${{ '{:,.2f}'.format(value) }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text"><i class="fa fa-sign-out-alt"></i></div>
+      </div>
+      <input type="email" class="form-control" id="customerId" name="customerId"
+          placeholder="Quién envía" value="{{ session['email'] }}" required autofocus/>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text"><i class="fa fa-sign-in-alt"></i></div>
+      </div>
+      <input type="email" class="form-control" id="recipientId" name="recipientId"
+          placeholder="Quién recibe" value="" required/>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text"><i class="far fa-credit-card"></i></div>
+      </div>
+      <input type="text" class="form-control" id="cardNumber" name="cardNumber"
+        placeholder="Número de tarjeta" required />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col">
+        <input id="expMonth" name="expMonth" type="text" class="form-control" placeholder="MM">
+      </div>
+      <div class="col">
+        <input id="expYear" name="expYear" type="text" class="form-control" placeholder="YY">
+      </div>
+      <div class="col">
+        <input id="cvc" name="cvc" type="password" class="form-control" placeholder="CVC" required />
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button id="btnTest" class="btn btn-light btn-sm btn-block">Usar datos de prueba</button>
+    <button id="btnSend" class="btn btn-success btn-lg btn-block">Enviar pago</button>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="checkbox" value="" id="simulateJsError">
+    <label class="form-check-label" for="simulateJsError">
+      <small>Simular error Javascript</small>
+    </label>
+  </div>
+</form>
+
+<div class="col-md-9">
+  <pre id="console">Sistema listo</pre>
+</div>
+  
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+
+{% endblock %}

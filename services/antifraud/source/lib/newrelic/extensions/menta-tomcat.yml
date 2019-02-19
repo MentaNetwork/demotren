@@ -1,0 +1,15 @@
+name: MentaTomcat
+version: 1.0
+enabled: true
+jmx:
+  - object_name: Catalina:type=Cache,host=localhost,path=/risk-assessment-service/evaluate-payment-intent
+    metrics:
+      - attributes: accessCount, cacheSize, hitsCount
+        type: simple
+  - object_name: Catalina:type=Connector,port=8009
+    metrics:
+      - attributes: bufferSize, maxHeaderCount
+  - object_name: java.nio:type=BufferPool,name=*
+    metrics:
+      - attributes: Count
+        type: monotonically_increasing
