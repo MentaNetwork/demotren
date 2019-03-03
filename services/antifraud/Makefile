@@ -12,7 +12,7 @@ clean:
 	rm -rf source/target
 	docker rmi -f antifraud
 
-build: source/target
+build:
 	docker build -t antifraud .
 
 run: build

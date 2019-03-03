@@ -1,3 +1,4 @@
 .DS_Store
 *.class
-/target/
+target/*
+!target/risk-assessment-service.war
