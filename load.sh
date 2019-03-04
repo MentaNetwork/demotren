@@ -26,10 +26,11 @@ simulate_frontend() {
         --data-binary '{"name":"ernesto@menta.com.mx","number":"5500000000000004","month":"3","year":"2021","cvc":"590"}'
 
     # Send Payment intent
+    local amount=$(( $RANDOM % 100000  ))
     curl "$API/pay" \
         -H 'Content-Type: application/json' \
         -H 'Accept: application/json' \
-        --data-binary '{"token":"TOKEN_eyJuYW1lIj","amount":"20000","customerId":"ernestom@menta.com.mx","recipientId":"paletas@yahoo.mx"}'
+        --data-binary '{"token":"TOKEN_eyJuYW1lIj","amount":"'$amount'","customerId":"ernestom@menta.com.mx","recipientId":"paletas@yahoo.mx"}'
 
     # Send Payment
     curl -X POST "$CORE/core/PaymentProcessor" \
