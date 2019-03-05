@@ -19,4 +19,3 @@ COPY source/lib/ojdbc8.jar /usr/local/tomcat/lib/
 
 # New Relic
 COPY source/lib/newrelic /usr/local/tomcat/newrelic
-RUN java -jar /usr/local/tomcat/newrelic/newrelic.jar install
