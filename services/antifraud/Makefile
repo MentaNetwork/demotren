@@ -8,8 +8,7 @@ dev: run
 	echo PENDIENTE
 
 clean:
-	cd source && mvn dependency:purge-local-repository
-	rm -rf source/target
+	cd source && command -v mvn && mvn dependency:purge-local-repository
 	docker rmi -f antifraud
 
 build:
@@ -29,4 +28,4 @@ altrun: build
 			-Dnewrelic.config.license_key=90cbf5bcdfc82b765cca853b645201c6fe0a562e \
 			-Dnewrelic.config.app_name='Antifraud Tomcat' \
 			-Dnewrelic.config.distributed_tracing.enabled=true" \
-		antifraud 
+		antifraud

@@ -28,7 +28,6 @@ Requisitos:
 - Una cuenta de New Relic con APM Pro
 - Docker
 - GNU Make
-- Maven in $PATH
 
 Renombrar el archivo [.env.dist](./.env.dist) por `.env` y definir el valor de `NEW_RELIC_LICENSE_KEY` con una llave de licencia válida.
 
