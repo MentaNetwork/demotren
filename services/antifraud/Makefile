@@ -15,17 +15,14 @@ build:
 	docker build -t antifraud .
 
 run: build
+	export $(grep RELIC ../../.env | xargs)
 	docker run -it --rm -p 8080:8080 --name antifraud \
 		-e CATALINA_OPTS="-Dcom.sun.management.jmxremote \
 			-Dcom.sun.management.jmxremote.port=9000 \
 			-Dcom.sun.management.jmxremote.ssl=false \
 			-Dcom.sun.management.jmxremote.authenticate=false" \
-		antifraud
-
-altrun: build
-	docker run -it --rm -p 8080:8080 --name antifraud \
 		-e JAVA_OPTS="-javaagent:/usr/local/tomcat/newrelic/newrelic.jar \
-			-Dnewrelic.config.license_key=90cbf5bcdfc82b765cca853b645201c6fe0a562e \
+			-Dnewrelic.config.license_key=${NEW_RELIC_LICENSE_KEY} \
 			-Dnewrelic.config.app_name='Antifraud Tomcat' \
 			-Dnewrelic.config.distributed_tracing.enabled=true" \
 		antifraud
