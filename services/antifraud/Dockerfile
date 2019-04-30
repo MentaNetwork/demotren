@@ -6,8 +6,8 @@ ENV CATALINA_OPTS="-Dcom.sun.management.jmxremote \
                    -Dcom.sun.management.jmxremote.ssl=false \
                    -Dcom.sun.management.jmxremote.authenticate=false"
 
-# Oracle Driver
-ENV JAVA_OPTS="-Duser.timezone=GMT"
+# Oracle Driver & New Relic
+ENV JAVA_OPTS="-Duser.timezone=GMT -javaagent:/usr/local/tomcat/newrelic/newrelic.jar -Dnewrelic.config.app_name='Antifraud Tomcat'"
 
 # Tomcat
 COPY docker/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
