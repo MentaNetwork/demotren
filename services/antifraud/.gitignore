@@ -11,3 +11,4 @@ hs_err_pid*
 
 source/build/
 source/dist/
+source/bin/
