@@ -3,6 +3,7 @@
 FRONTEND='http://localhost'
 API='http://localhost:8000'
 CORE='http://localhost:5000'
+ANTIFRAUD='http://localhost:8080'
 
 simulate_frontend() {
     # Login
@@ -45,6 +46,14 @@ simulate_frontend() {
     sleep 1
 }
 
-while True; do
+simulate_antifraud() {
+    curl -X POST "$ANTIFRAUD/risk-assessment-service/evaluate-payment-intent" \
+        -H 'Content-type: application/json' \
+        -H 'Accept: application/json' \
+        --data '{"transactionId": "123", "token": "qwerty", "amount": 2340}' -v
+}
+
+
+while true; do
     simulate_frontend
 done
