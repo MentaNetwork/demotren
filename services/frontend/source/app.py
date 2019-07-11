@@ -7,6 +7,7 @@ newrelic.agent.initialize(nr_config, 'production')
 
 
 import time
+import random
 from werkzeug.debug import DebuggedApplication
 from flask import (
     Flask,
@@ -79,6 +80,9 @@ def index():
 def payment_form():
     # if not session.get('email'):
     #     return redirect(url_for('index'))
+    if random.randint(1, 10) > 7:
+        time.sleep(random.randint(2, 6))
+
     amounts = get_available_amounts()
     amounts = [int(list(a.values())[0]) for a in amounts]
     return render_template('payment-form.html', **{'amounts': amounts})
