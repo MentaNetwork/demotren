@@ -27,7 +27,7 @@ simulate_frontend() {
         --data-binary '{"name":"ernesto@menta.com.mx","number":"5500000000000004","month":"3","year":"2021","cvc":"590"}'
 
     # Send Payment intent
-    local amount=$(( $RANDOM % 100000  ))
+    local amount=`python -c 'import random; print(random.randrange(100,2000,100))'`
     curl "$API/pay" \
         -H 'Content-Type: application/json' \
         -H 'Accept: application/json' \
