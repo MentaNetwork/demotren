@@ -182,13 +182,15 @@ public class RiskAssessmentServlet extends HttpServlet {
 
   @Trace
   protected Integer getRiskScore(String token, Integer amount) throws SQLException {
-    // Se vereifica la tarjeta: activa, robada, etc
+    // Se verifica la tarjeta: activa, robada, etc
     if (!isValidCard(token)) {
       return 0;
     }
 
     // Generamos el score de riesgo
-    int score = new Random().nextInt(10);
+    int score = (amount >= 1000 && amount <= 1300) 
+      ? new Random().nextInt((10 - 7) + 1) - 7
+      : new Random().nextInt(10);
 
     // ( Simulamos sacarlo de la base de datos )
     Connection con = getOracleConnection();
