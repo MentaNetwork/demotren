@@ -55,5 +55,10 @@ simulate_antifraud() {
 
 
 while true; do
+    node load.js
+    sleep 1
+done &
+
+while true; do
     simulate_frontend
 done
