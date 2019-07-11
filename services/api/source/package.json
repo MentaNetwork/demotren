@@ -8,6 +8,7 @@
   "license": "GNU GPL 3",
   "main": "app.js",
   "dependencies": {
+    "@newrelic/native-metrics": "^4.1.0",
     "newrelic": "^5.2.1",
     "node-fetch": "^2.3.0",
     "restify": "^4.0.2"
