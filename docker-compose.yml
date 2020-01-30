@@ -1,7 +1,19 @@
 
 version: "3"
 services:
-
+  fluentd:
+    container_name: fluentd
+    build:
+      context: .
+      dockerfile: services/fluentd/Dockerfile
+      args:
+        license: $NEW_RELIC_LICENSE_KEY
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
   mysql:
     image: mariadb:latest
     env_file: .env
@@ -12,13 +24,24 @@ services:
     ports:
       - 3306:3306
     restart: unless-stopped
-  
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
   oracle:
     build: services/oracle
     env_file: .env
     ports:
       - 1521:1521
     restart: unless-stopped
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
 
   frontend:
     build: services/frontend
@@ -32,6 +55,12 @@ services:
     links:
       - mysql
     restart: unless-stopped
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
   
   antifraud:
     build: services/antifraud
@@ -43,6 +72,12 @@ services:
     links:
       - oracle
     restart: unless-stopped
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
 
   core:
     build: services/core
@@ -50,6 +85,12 @@ services:
     ports:
       - 5000:5000
     restart: unless-stopped
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
 
   api:
     build: services/api
@@ -63,3 +104,9 @@ services:
       - antifraud
       - core
     restart: unless-stopped
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
