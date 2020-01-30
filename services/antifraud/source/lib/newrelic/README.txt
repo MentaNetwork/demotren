@@ -24,23 +24,17 @@ If you don't already have a New Relic account, sign up for a free account:
 When you sign up, you will be provided with a customized zip file that is
 configured with your license key.
 
-Using Java SE 5? You will need a different version of the agent. See below.
-
 
 Installation
 ------------
 Complete installation instructions and troubleshooting tips are available 
 at:
 
-  https://newrelic.com/docs/java/new-relic-for-java
-
-For most users, the following self-installer instructions apply:
-
-  https://newrelic.com/docs/java/java-agent-self-installer
+  https://docs.newrelic.com/docs/agents/java-agent/getting-started/introduction-new-relic-java
 
 Configuration options are available at:
 
-  https://newrelic.com/docs/java/java-agent-configuration
+  https://docs.newrelic.com/docs/agents/java-agent/configuration/java-agent-configuration-config-file
 
 
 Using New Relic
@@ -86,13 +80,6 @@ newrelic-api.jar file at compile time and add it as a dependency to your
 app. Make sure that you use the same version for your API and newrelic.jar.
 New Relic publishes to the Maven Central Repository, so you can add a
 dependency to newrelic-api in your favorite build tool.
-
-
-Note to Java SE 5 Users
------------------------
-This version of the agent works with Java SE 6, 7 and 8. At signup or in your
-Account Settings page, you have the option to download a version of the
-agent that works with Java SE 5.
 
 
 Support
