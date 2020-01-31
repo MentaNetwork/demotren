@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = self.location.protocol + '//' + self.location.host + ':8000';
 
 const TOKENIZATION_SERVICE = BASE_URL + '/tokenize';
 const PAYMENT_SERVICE = BASE_URL + '/pay';
