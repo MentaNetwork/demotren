@@ -110,3 +110,17 @@ services:
       driver: fluentd
       options:
         tag: master
+
+  tcpserver:
+    build: services/tcpserver
+    env_file: .env
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: master
+    

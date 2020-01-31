@@ -101,7 +101,7 @@ namespace core.Controllers
         protected string SendToAuthorizer(string authorizer, string iso)
         {
 
-            TcpClient client = new TcpClient("52.20.16.20", 30000);
+            TcpClient client = new TcpClient("tcpserver", 9000);
             NetworkStream stream = client.GetStream();
             byte[] bytesToSend = Encoding.ASCII.GetBytes(iso);
             stream.Write(bytesToSend, 0, bytesToSend.Length);
