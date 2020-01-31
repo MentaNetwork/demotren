@@ -2,7 +2,7 @@ SHELL := /bin/bash
 .PHONY: build run clean
 
 docker-oracle-xe-11g:
-	git clone git@github.com:MentaNetwork/docker-oracle-xe-11g.git
+	git clone https://github.com/MentaNetwork/docker-oracle-xe-11g.git
 
 clean:
 	docker rmi -f oracle
