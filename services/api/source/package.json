@@ -9,7 +9,7 @@
   "main": "app.js",
   "dependencies": {
     "newrelic": "^6.3.0",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "restify": "^4.0.2"
   },
   "devDependencies": {
